@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Apex Infinite — iMac Thumbnail</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@500;600;700;800&family=Space+Grotesk:wght@600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="shared-styles.css" />
+  <style>
+    .device-wrap { position: relative; display: flex; align-items: center; justify-content: center; }
+
+    .imac { width: 860px; }
+
+    .imac-shell {
+      background: linear-gradient(180deg, #ececee 0%, #d8d8dc 8%, #c8c8cc 100%);
+      border-radius: 20px 20px 0 0;
+      padding: 16px 16px 0;
+      box-shadow: 0 32px 90px rgba(0,0,0,0.55), inset 0 1px 0 rgba(255,255,255,0.85);
+    }
+
+    .imac-bezel {
+      background: #0a0a0f;
+      border-radius: 11px;
+      padding: 9px 9px 11px;
+      position: relative;
+    }
+
+    .imac-camera {
+      position: absolute;
+      top: 14px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 9px;
+      height: 9px;
+      border-radius: 50%;
+      background: #1a1a22;
+      z-index: 5;
+    }
+
+    .imac-screen {
+      border-radius: 4px;
+      overflow: hidden;
+      aspect-ratio: 16 / 10;
+      background: #05050a;
+    }
+
+    .imac-screen img {
+      display: block;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: top center;
+    }
+
+    .imac-chin {
+      height: 24px;
+      background: linear-gradient(180deg, #d0d0d4, #bcbcc2);
+      border-radius: 0 0 4px 4px;
+      display: grid;
+      place-items: center;
+    }
+
+    .imac-chin::after {
+      content: "";
+      width: 11px;
+      height: 11px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #e8e8ec, #b0b0b8);
+      opacity: 0.7;
+    }
+
+    .imac-stand { display: flex; flex-direction: column; align-items: center; }
+
+    .imac-neck {
+      width: 98px;
+      height: 56px;
+      background: linear-gradient(90deg, #b8b8be, #e0e0e6 30%, #c4c4ca 70%, #b0b0b8);
+      clip-path: polygon(18% 0, 82% 0, 100% 100%, 0 100%);
+    }
+
+    .imac-base {
+      width: 210px;
+      height: 15px;
+      margin-top: -2px;
+      border-radius: 0 0 12px 12px;
+      background: linear-gradient(180deg, #c8c8ce, #a8a8b0);
+      box-shadow: 0 8px 22px rgba(0,0,0,0.35);
+    }
+
+    .c1 { top: 6%; left: -2%; }
+    .c2 { top: 38%; right: -4%; }
+    .c3 { bottom: 18%; left: 4%; }
+  </style>
+</head>
+<body>
+  <div class="canvas">
+    <div class="grid-bg"></div>
+    <div class="layout">
+      <aside class="copy">
+        <div class="brand">
+          <div class="logo-mark">∞</div>
+          <div class="brand-text">
+            <h1>Apex Infinite</h1>
+            <p>Desktop · Command Center</p>
+          </div>
+        </div>
+
+        <p class="eyebrow">Main Motive</p>
+        <h2 class="headline">One OS for life, work &amp; <span class="grad">commerce</span></h2>
+
+        <p class="motive">
+          <strong>What it does:</strong> Unifies food, rides, travel, payments, shopping,
+          workspace, events &amp; wellness inside one identity — no 8–10 separate apps.
+        </p>
+
+        <p class="desc">
+          Desktop Command Center with Omnibar intent routing, Oracle AI, sidebar navigation
+          to 11 live modules, and real MySQL auth — built as a production Super-App.
+        </p>
+
+        <div class="pillars">
+          <div class="pillar">
+            <span class="tag">Motive A</span>
+            <h3>Unify the lifestyle stack</h3>
+            <p>Travel, Food, Glide, ApexPay &amp; more in one shell.</p>
+          </div>
+          <div class="pillar">
+            <span class="tag">Motive B</span>
+            <h3>AI control layer</h3>
+            <p>Omnibar turns intent into navigation — “Book Tokyo” routes to Travel.</p>
+          </div>
+          <div class="pillar">
+            <span class="tag">Motive C</span>
+            <h3>Real conversion</h3>
+            <p>Checkout-first flows — business-ready, not empty demos.</p>
+          </div>
+        </div>
+
+        <div class="badges">
+          <span class="badge purple">Command Center</span>
+          <span class="badge cyan">Omnibar + Oracle</span>
+          <span class="badge">11 Modules</span>
+          <span class="badge">MySQL Auth</span>
+        </div>
+      </aside>
+
+      <div class="stage">
+        <div class="device-wrap">
+          <div class="imac">
+            <div class="imac-shell">
+              <div class="imac-bezel">
+                <div class="imac-camera"></div>
+                <div class="imac-screen">
+                  <img src="screenshots/desktop-command-center.png" alt="Command Center" />
+                </div>
+              </div>
+              <div class="imac-chin"></div>
+            </div>
+            <div class="imac-stand">
+              <div class="imac-neck"></div>
+              <div class="imac-base"></div>
+            </div>
+          </div>
+          <span class="callout c1 purple">Welcome back, Voyager</span>
+          <span class="callout c2">Service Lattice · 11 modules</span>
+          <span class="callout c3 purple">Ctrl+K Omnibar</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

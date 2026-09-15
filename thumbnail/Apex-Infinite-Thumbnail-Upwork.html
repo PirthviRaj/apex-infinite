@@ -1,0 +1,779 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Apex Infinite — Upwork Thumbnail (4:3)</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@500;600;700;800&family=Space+Grotesk:wght@600;700;800&display=swap" rel="stylesheet" />
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html, body {
+      width: 2000px;
+      height: 1500px;
+      overflow: hidden;
+      font-family: "Manrope", sans-serif;
+      background: #020208;
+      color: #fff;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      text-rendering: optimizeLegibility;
+    }
+
+    .canvas {
+      width: 2000px;
+      height: 1500px;
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    /* Aurora background */
+    .aurora {
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(ellipse 80% 50% at 50% -10%, rgba(168,85,247,0.35), transparent 60%),
+        radial-gradient(ellipse 60% 45% at 15% 60%, rgba(34,211,238,0.12), transparent 55%),
+        radial-gradient(ellipse 55% 40% at 85% 55%, rgba(168,85,247,0.14), transparent 50%),
+        radial-gradient(ellipse 70% 35% at 50% 100%, rgba(34,211,238,0.18), transparent 60%),
+        linear-gradient(180deg, #020208 0%, #06061a 100%);
+    }
+
+    .stars {
+      position: absolute;
+      inset: 0;
+      background-image:
+        radial-gradient(1px 1px at 10% 20%, rgba(255,255,255,0.5), transparent),
+        radial-gradient(1px 1px at 30% 65%, rgba(255,255,255,0.35), transparent),
+        radial-gradient(1px 1px at 70% 15%, rgba(255,255,255,0.4), transparent),
+        radial-gradient(1px 1px at 85% 45%, rgba(255,255,255,0.3), transparent),
+        radial-gradient(1px 1px at 50% 80%, rgba(255,255,255,0.25), transparent),
+        radial-gradient(1px 1px at 92% 78%, rgba(255,255,255,0.35), transparent);
+      opacity: 0.7;
+    }
+
+    .ring {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -44%);
+      width: 1280px;
+      height: 1280px;
+      border-radius: 50%;
+      border: 1px solid rgba(168,85,247,0.12);
+      pointer-events: none;
+    }
+
+    .ring::before {
+      content: "";
+      position: absolute;
+      inset: 50px;
+      border-radius: 50%;
+      border: 1px solid rgba(34,211,238,0.08);
+    }
+
+    .ring-outer {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -44%);
+      width: 1780px;
+      height: 1780px;
+      border-radius: 50%;
+      border: 1px solid rgba(255,255,255,0.04);
+      pointer-events: none;
+    }
+
+    .edge-glow-left,
+    .edge-glow-right {
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      width: 420px;
+      pointer-events: none;
+    }
+
+    .edge-glow-left {
+      left: 0;
+      background:
+        linear-gradient(90deg, rgba(168,85,247,0.16) 0%, rgba(168,85,247,0.06) 45%, transparent 100%);
+    }
+
+    .edge-glow-right {
+      right: 0;
+      background:
+        linear-gradient(270deg, rgba(34,211,238,0.14) 0%, rgba(34,211,238,0.05) 45%, transparent 100%);
+    }
+
+    .edge-line {
+      position: absolute;
+      top: 88px;
+      bottom: 88px;
+      width: 1px;
+      background: linear-gradient(180deg, transparent, rgba(168,85,247,0.3), rgba(34,211,238,0.3), transparent);
+    }
+
+    .edge-line.left { left: 28px; }
+    .edge-line.right { right: 28px; }
+
+    .corner-orb {
+      position: absolute;
+      width: 220px;
+      height: 220px;
+      border-radius: 50%;
+      filter: blur(48px);
+      pointer-events: none;
+      opacity: 0.55;
+    }
+
+    .corner-orb.tl { top: 60px; left: 20px; background: rgba(168,85,247,0.35); }
+    .corner-orb.tr { top: 80px; right: 24px; background: rgba(34,211,238,0.28); }
+    .corner-orb.bl { bottom: 100px; left: 32px; background: rgba(34,211,238,0.2); }
+    .corner-orb.br { bottom: 80px; right: 28px; background: rgba(168,85,247,0.22); }
+
+    /* Side rails — fill far left/right */
+    .side-rail {
+      position: absolute;
+      top: 128px;
+      bottom: 248px;
+      width: 204px;
+      z-index: 2;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      pointer-events: none;
+    }
+
+    .side-rail.left { left: 20px; align-items: flex-start; }
+    .side-rail.right { right: 20px; align-items: flex-end; }
+
+    .side-stat {
+      width: 100%;
+      background: rgba(255,255,255,0.035);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 12px;
+      padding: 10px 12px;
+      backdrop-filter: blur(8px);
+    }
+
+    .side-stat .num {
+      font-family: "Space Grotesk", sans-serif;
+      font-size: 22px;
+      font-weight: 800;
+      line-height: 1;
+      margin-bottom: 2px;
+      background: linear-gradient(90deg, #c084fc, #22d3ee);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+
+    .side-stat .lbl {
+      font-size: 9px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: #71717a;
+      font-weight: 700;
+    }
+
+    .side-mod-stack {
+      display: flex;
+      flex-direction: column;
+      gap: 7px;
+      width: 100%;
+    }
+
+    .side-mod {
+      font-size: 9.5px;
+      font-weight: 700;
+      padding: 7px 10px;
+      border-radius: 10px;
+      border: 1px solid rgba(255,255,255,0.09);
+      background: rgba(0,0,0,0.35);
+      color: #d4d4d8;
+      text-align: left;
+    }
+
+    .side-mod.hi {
+      border-color: rgba(168,85,247,0.4);
+      color: #e9d5ff;
+      background: rgba(168,85,247,0.1);
+    }
+
+    .side-mod.cyan {
+      border-color: rgba(34,211,238,0.35);
+      color: #a5f3fc;
+      background: rgba(34,211,238,0.08);
+    }
+
+    .side-badge {
+      align-self: center;
+      font-size: 8px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      font-weight: 800;
+      color: #52525b;
+      writing-mode: vertical-rl;
+      text-orientation: mixed;
+      transform: rotate(180deg);
+      padding: 8px 0;
+    }
+
+    .side-rail.right .side-badge { transform: none; }
+
+    /* —— HEADER (centered) —— */
+    .header {
+      position: relative;
+      z-index: 3;
+      text-align: center;
+      padding-top: 44px;
+      width: 100%;
+    }
+
+    .brand-row {
+      display: inline-flex;
+      align-items: center;
+      gap: 14px;
+      margin-bottom: 10px;
+    }
+
+    .logo {
+      width: 48px;
+      height: 48px;
+      border-radius: 13px;
+      background: linear-gradient(135deg, #a855f7, #22d3ee);
+      display: grid;
+      place-items: center;
+      font-size: 24px;
+      font-weight: 800;
+      box-shadow: 0 0 40px rgba(168,85,247,0.45);
+    }
+
+    .brand-name {
+      font-family: "Space Grotesk", sans-serif;
+      font-size: 36px;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+    }
+
+    .sub {
+      font-size: 13px;
+      letter-spacing: 0.28em;
+      text-transform: uppercase;
+      color: #22d3ee;
+      font-weight: 700;
+      margin-bottom: 18px;
+    }
+
+    .headline {
+      font-family: "Space Grotesk", sans-serif;
+      font-size: 38px;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      line-height: 1.12;
+      max-width: 16ch;
+      margin: 0 auto 10px;
+    }
+
+    .headline span {
+      background: linear-gradient(90deg, #c084fc, #22d3ee);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+
+    .pitch {
+      font-size: 15px;
+      color: #a1a1aa;
+      max-width: 78ch;
+      line-height: 1.55;
+      margin: 0 auto;
+      padding: 0 48px;
+    }
+
+    /* —— HERO full-width —— */
+    .hero {
+      position: relative;
+      z-index: 4;
+      flex: 1;
+      min-height: 720px;
+      display: grid;
+      grid-template-columns: minmax(268px, 1fr) auto minmax(268px, 1fr);
+      align-items: center;
+      width: 100%;
+      padding: 8px 228px 12px;
+      gap: 14px;
+    }
+
+    .wing {
+      display: flex;
+      flex-direction: column;
+      gap: 11px;
+      justify-content: center;
+      height: 100%;
+    }
+
+    .wing.left { align-items: flex-start; padding-left: 0; }
+    .wing.right { align-items: flex-end; padding-right: 0; }
+
+    .float-card {
+      width: 278px;
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.09);
+      border-radius: 14px;
+      padding: 12px 14px;
+      backdrop-filter: blur(10px);
+      text-align: left;
+    }
+
+    .float-card .tag {
+      font-size: 9px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      font-weight: 700;
+      margin-bottom: 4px;
+    }
+
+    .float-card h3 {
+      font-family: "Space Grotesk", sans-serif;
+      font-size: 14px;
+      font-weight: 700;
+      margin-bottom: 3px;
+    }
+
+    .float-card p {
+      font-size: 11px;
+      color: #a1a1aa;
+      line-height: 1.35;
+    }
+
+    .float-card.purple { border-color: rgba(168,85,247,0.35); }
+    .float-card.purple .tag { color: #e9d5ff; }
+    .float-card.cyan { border-color: rgba(34,211,238,0.35); }
+    .float-card.cyan .tag { color: #a5f3fc; }
+    .float-card.gold { border-color: rgba(251,191,36,0.35); }
+    .float-card.gold .tag { color: #fde68a; }
+    .float-card.mint { border-color: rgba(52,211,153,0.35); }
+    .float-card.mint .tag { color: #bbf7d0; }
+
+    .float-card.offset-a { transform: translateX(12px); }
+    .float-card.offset-b { transform: translateX(-12px); }
+    .wing.right .float-card.offset-a { transform: translateX(-12px); }
+    .wing.right .float-card.offset-b { transform: translateX(12px); }
+
+    .header-stats {
+      position: absolute;
+      top: 58px;
+      left: 0;
+      right: 0;
+      display: flex;
+      justify-content: space-between;
+      padding: 0 24px;
+      pointer-events: none;
+      z-index: 4;
+    }
+
+    .header-chip {
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.09);
+      border-radius: 999px;
+      padding: 8px 14px;
+      font-size: 10px;
+      font-weight: 700;
+      color: #a1a1aa;
+      backdrop-filter: blur(8px);
+      max-width: 200px;
+      text-align: center;
+      line-height: 1.35;
+    }
+
+    .header-chip strong { color: #e9d5ff; display: block; font-size: 11px; margin-bottom: 1px; }
+
+    .devices-col {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .devices {
+      position: relative;
+      display: flex;
+      align-items: flex-end;
+      justify-content: center;
+    }
+
+    .glow-pedestal {
+      position: absolute;
+      bottom: -20px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 680px;
+      height: 80px;
+      background: radial-gradient(ellipse, rgba(168,85,247,0.35) 0%, transparent 70%);
+      filter: blur(20px);
+    }
+
+    .imac { width: 620px; position: relative; z-index: 2; }
+
+    .imac-shell {
+      background: linear-gradient(180deg, #eeeef2 0%, #d0d0d8 100%);
+      border-radius: 16px 16px 0 0;
+      padding: 11px 11px 0;
+      box-shadow: 0 25px 70px rgba(0,0,0,0.5);
+    }
+
+    .imac-bezel {
+      background: #08080e;
+      border-radius: 8px;
+      padding: 7px;
+      position: relative;
+    }
+
+    .imac-dot {
+      position: absolute;
+      top: 10px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: #222;
+      z-index: 5;
+    }
+
+    .imac-screen {
+      border-radius: 3px;
+      overflow: hidden;
+      aspect-ratio: 16/10;
+    }
+
+    .imac-screen img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: top center;
+      display: block;
+    }
+
+    .imac-chin {
+      height: 18px;
+      background: linear-gradient(180deg, #ccc, #b8b8c0);
+    }
+
+    .imac-stand { display: flex; flex-direction: column; align-items: center; }
+
+    .imac-neck {
+      width: 76px;
+      height: 42px;
+      background: linear-gradient(90deg, #b0b0b8, #e0e0e8, #b0b0b8);
+      clip-path: polygon(20% 0, 80% 0, 100% 100%, 0 100%);
+    }
+
+    .imac-base {
+      width: 168px;
+      height: 11px;
+      border-radius: 0 0 10px 10px;
+      background: linear-gradient(180deg, #c0c0c8, #9898a0);
+    }
+
+    .phone-wrap {
+      margin-left: -58px;
+      margin-bottom: 38px;
+      z-index: 5;
+      filter: drop-shadow(0 20px 35px rgba(0,0,0,0.55));
+    }
+
+    .phone { width: 188px; position: relative; }
+
+    .phone .frame { width: 100%; display: block; position: relative; z-index: 1; }
+
+    .phone-in {
+      position: absolute;
+      z-index: 2;
+      left: 4.1%;
+      right: 3.9%;
+      top: 1.4%;
+      bottom: 1.6%;
+      border-radius: 12.5%;
+      overflow: hidden;
+    }
+
+    .phone-in img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: top center;
+      display: block;
+    }
+
+    .island {
+      position: absolute;
+      z-index: 6;
+      top: 1.1%;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 32%;
+      height: 2.5%;
+      min-height: 12px;
+      border-radius: 999px;
+      background: #000;
+    }
+
+    /* —— FOOTER INFO —— */
+    .footer {
+      position: relative;
+      z-index: 5;
+      width: 100%;
+      padding: 4px 40px 44px;
+      text-align: center;
+    }
+
+    .pillars {
+      display: flex;
+      justify-content: center;
+      gap: 14px;
+      margin-bottom: 20px;
+      width: 100%;
+      padding: 0 20px;
+    }
+
+    .pillar {
+      flex: 1;
+      max-width: none;
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 14px;
+      padding: 14px 16px;
+      text-align: left;
+      backdrop-filter: blur(8px);
+    }
+
+    .pillar h4 {
+      font-family: "Space Grotesk", sans-serif;
+      font-size: 13px;
+      font-weight: 700;
+      margin-bottom: 4px;
+      color: #e9d5ff;
+    }
+
+    .pillar p {
+      font-size: 11.5px;
+      color: #a1a1aa;
+      line-height: 1.4;
+    }
+
+    .modules-label {
+      font-size: 10px;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: #52525b;
+      font-weight: 700;
+      margin-bottom: 10px;
+    }
+
+    .modules {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 8px;
+      width: 100%;
+      margin: 0 auto;
+      padding: 0 20px;
+    }
+
+    .mod {
+      font-size: 10px;
+      font-weight: 700;
+      padding: 6px 12px;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,0.1);
+      background: rgba(0,0,0,0.4);
+      color: #d4d4d8;
+    }
+
+    .mod.hi { border-color: rgba(168,85,247,0.45); color: #e9d5ff; background: rgba(168,85,247,0.08); }
+  </style>
+</head>
+<body>
+  <div class="canvas">
+    <div class="aurora"></div>
+    <div class="stars"></div>
+    <div class="ring-outer"></div>
+    <div class="ring"></div>
+    <div class="edge-glow-left"></div>
+    <div class="edge-glow-right"></div>
+    <div class="edge-line left"></div>
+    <div class="edge-line right"></div>
+    <div class="corner-orb tl"></div>
+    <div class="corner-orb tr"></div>
+    <div class="corner-orb bl"></div>
+    <div class="corner-orb br"></div>
+
+    <aside class="side-rail left">
+      <div class="side-stat">
+        <div class="num">11</div>
+        <div class="lbl">Live modules</div>
+      </div>
+      <div class="side-mod-stack">
+        <span class="side-mod hi">Restaurant Hub</span>
+        <span class="side-mod">Pulse Events</span>
+        <span class="side-mod cyan">ZenFlow Wellness</span>
+        <span class="side-mod">TaskMaster</span>
+      </div>
+      <div class="side-stat">
+        <div class="num">1</div>
+        <div class="lbl">Login · Wallet · OS</div>
+      </div>
+      <span class="side-badge">Apex Infinite</span>
+    </aside>
+
+    <aside class="side-rail right">
+      <div class="side-stat">
+        <div class="num">∞</div>
+        <div class="lbl">Universal Super-OS</div>
+      </div>
+      <div class="side-mod-stack">
+        <span class="side-mod hi">Social Rizz &amp; SEO</span>
+        <span class="side-mod cyan">Omnibar AI</span>
+        <span class="side-mod">Command Center</span>
+        <span class="side-mod">Desktop + Mobile</span>
+      </div>
+      <div class="side-stat">
+        <div class="num">8–10</div>
+        <div class="lbl">Apps replaced</div>
+      </div>
+      <span class="side-badge">Super-App</span>
+    </aside>
+
+    <div class="header-stats">
+      <div class="header-chip"><strong>Desktop</strong>Command Center &amp; Omnibar</div>
+      <div class="header-chip"><strong>Mobile</strong>ApexPay wallet &amp; checkout</div>
+    </div>
+
+    <header class="header">
+      <div class="brand-row">
+        <div class="logo">∞</div>
+        <span class="brand-name">Apex Infinite</span>
+      </div>
+      <p class="sub">Universal AI Super-OS</p>
+      <h1 class="headline">One place to <span>live, work &amp; transact</span></h1>
+      <p class="pitch">
+        A commissioned Super-App that unifies travel, food, rides, payments, workspace &amp; wellness —
+        one login, one wallet, one Command Center on desktop and mobile.
+      </p>
+    </header>
+
+    <section class="hero">
+      <div class="wing left">
+        <div class="float-card purple offset-a">
+          <span class="tag">Module</span>
+          <h3>Travel Suite</h3>
+          <p>Flights, hotels &amp; 3D destinations — book in one tap.</p>
+        </div>
+        <div class="float-card cyan">
+          <span class="tag">Module</span>
+          <h3>Food &amp; Grocery</h3>
+          <p>Fly-to-cart delivery with live checkout flows.</p>
+        </div>
+        <div class="float-card mint offset-b">
+          <span class="tag">Module</span>
+          <h3>WorkSpace Hub</h3>
+          <p>Reserve desks &amp; meeting rooms on floor plans.</p>
+        </div>
+        <div class="float-card gold offset-a">
+          <span class="tag">Platform</span>
+          <h3>Real checkout flows</h3>
+          <p>Live payments, bookings &amp; cart — not mockups.</p>
+        </div>
+      </div>
+
+      <div class="devices-col">
+        <div class="devices">
+          <div class="glow-pedestal"></div>
+          <div class="imac">
+            <div class="imac-shell">
+              <div class="imac-bezel">
+                <div class="imac-dot"></div>
+                <div class="imac-screen">
+                  <img src="screenshots/desktop-command-center.png" alt="Desktop" />
+                </div>
+              </div>
+              <div class="imac-chin"></div>
+            </div>
+            <div class="imac-stand">
+              <div class="imac-neck"></div>
+              <div class="imac-base"></div>
+            </div>
+          </div>
+          <div class="phone-wrap">
+            <div class="phone">
+              <img class="frame" src="mockups/iphone-16-pro-max.png" alt="iPhone" />
+              <div class="phone-in">
+                <img src="screenshots/mobile-pay.png" alt="Mobile" />
+                <div class="island"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="wing right">
+        <div class="float-card gold offset-a">
+          <span class="tag">Module</span>
+          <h3>ApexPay</h3>
+          <p>Wallet, P2P transfers &amp; bill payments on mobile.</p>
+        </div>
+        <div class="float-card mint">
+          <span class="tag">Module</span>
+          <h3>Apex Glide</h3>
+          <p>Rides &amp; rentals — track drivers in real time.</p>
+        </div>
+        <div class="float-card purple offset-b">
+          <span class="tag">Module</span>
+          <h3>Vogue AI</h3>
+          <p>AI stylist &amp; fashion shopping inside the OS.</p>
+        </div>
+        <div class="float-card cyan offset-a">
+          <span class="tag">AI</span>
+          <h3>Omnibar intent</h3>
+          <p>“Order sushi” or “pay bill” — routed instantly.</p>
+        </div>
+      </div>
+    </section>
+
+    <footer class="footer">
+      <div class="pillars">
+        <div class="pillar">
+          <h4>Why it exists</h4>
+          <p>Stop switching between 8–10 apps. One OS handles your entire daily digital life.</p>
+        </div>
+        <div class="pillar">
+          <h4>How it works</h4>
+          <p>Omnibar understands intent — “order sushi” or “pay bill” routes you instantly.</p>
+        </div>
+        <div class="pillar">
+          <h4>What you get</h4>
+          <p>11 live services, real checkout flows &amp; a business-ready product platform.</p>
+        </div>
+      </div>
+      <p class="modules-label">Live Modules</p>
+      <div class="modules">
+        <span class="mod hi">Travel Suite</span>
+        <span class="mod hi">Food &amp; Grocery</span>
+        <span class="mod">Apex Glide</span>
+        <span class="mod hi">ApexPay</span>
+        <span class="mod">WorkSpace Hub</span>
+        <span class="mod">Restaurant Hub</span>
+        <span class="mod">Pulse Events</span>
+        <span class="mod">ZenFlow Wellness</span>
+        <span class="mod">Vogue AI</span>
+        <span class="mod">TaskMaster</span>
+        <span class="mod">Social Rizz &amp; SEO</span>
+      </div>
+    </footer>
+  </div>
+</body>
+</html>

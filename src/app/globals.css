@@ -1,0 +1,134 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --background: #000000;
+  --foreground: #f4f4f5;
+  --apex-purple: #a855f7;
+  --apex-cyan: #22d3ee;
+  --apex-gold: #fbbf24;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+button {
+  appearance: none;
+  -webkit-appearance: none;
+  background: transparent;
+  border: none;
+  color: inherit;
+  font: inherit;
+  cursor: pointer;
+}
+
+html,
+body {
+  height: 100%;
+}
+
+body {
+  color: var(--foreground);
+  background: #000000;
+  font-family: var(--font-sora), sans-serif;
+  overflow-x: hidden;
+}
+
+::selection {
+  background: rgba(168, 85, 247, 0.45);
+  color: white;
+}
+
+@layer components {
+  .glass {
+    @apply bg-white/[0.04] backdrop-blur-xl border border-white/[0.08];
+  }
+
+  .glass-strong {
+    @apply bg-black/60 backdrop-blur-2xl border border-apex-purple/20;
+  }
+
+  .text-glow {
+    text-shadow: 0 0 24px rgba(168, 85, 247, 0.55);
+  }
+
+  .text-glow-cyan {
+    text-shadow: 0 0 24px rgba(34, 211, 238, 0.55);
+  }
+
+  .border-trail {
+    position: relative;
+    isolation: isolate;
+  }
+
+  .border-trail::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    padding: 1px;
+    border-radius: inherit;
+    background: linear-gradient(
+      90deg,
+      transparent,
+      #a855f7,
+      #22d3ee,
+      #fbbf24,
+      #a855f7,
+      transparent
+    );
+    background-size: 200% 100%;
+    animation: border-trail 3s linear infinite;
+    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    pointer-events: none;
+    z-index: 1;
+  }
+
+  .neural-orb {
+    background: radial-gradient(circle at 30% 30%, #c084fc, #a855f7 40%, #22d3ee 75%, transparent);
+    filter: blur(0.5px);
+    animation: neural-pulse 2.4s ease-in-out infinite;
+  }
+
+  .apex-scrollbar::-webkit-scrollbar {
+    width: 6px;
+  }
+
+  .apex-scrollbar::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  .apex-scrollbar::-webkit-scrollbar-thumb {
+    background: rgba(168, 85, 247, 0.35);
+    border-radius: 999px;
+  }
+}
+
+/* Legacy phone lib styles kept harmless if imported elsewhere */
+.PhoneInput {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  width: 100%;
+}
+
+.PhoneInputCountryIcon,
+.PhoneInputCountryIconImg {
+  width: 22px !important;
+  height: 16px !important;
+  max-width: 22px !important;
+  object-fit: cover;
+}
+
+.PhoneInputInput {
+  flex: 1;
+  min-width: 0;
+  background: transparent;
+  border: none;
+  outline: none;
+  color: white;
+  font-size: 1.05rem;
+}

@@ -1,0 +1,48 @@
+{
+  "name": "apex-infinite",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint",
+    "db:init": "node scripts/init-db.mjs",
+    "db:reset": "node scripts/init-db.mjs",
+    "thumb:capture": "node thumbnail/capture-screenshots.js",
+    "thumb:build": "node thumbnail/generate-thumbnail.js",
+    "thumb:ultra": "node thumbnail/generate-thumbnail.js",
+    "thumb:imac": "node thumbnail/generate-thumbnail.js",
+    "thumbnail": "node thumbnail/capture-screenshots.js && node thumbnail/generate-thumbnail.js",
+    "thumbnail:all": "node thumbnail/capture-screenshots.js && node thumbnail/generate-thumbnail.js"
+  },
+  "dependencies": {
+    "@radix-ui/react-dialog": "^1.1.15",
+    "@radix-ui/react-label": "^2.1.8",
+    "@radix-ui/react-separator": "^1.1.8",
+    "@radix-ui/react-slot": "^1.2.4",
+    "class-variance-authority": "^0.7.1",
+    "clsx": "^2.1.1",
+    "framer-motion": "^12.23.12",
+    "libphonenumber-js": "^1.12.15",
+    "lucide-react": "^0.542.0",
+    "mysql2": "^3.24.4",
+    "next": "14.2.35",
+    "react": "^18",
+    "react-dom": "^18",
+    "react-phone-number-input": "^3.4.12",
+    "tailwind-merge": "^3.3.1",
+    "zustand": "^5.0.8"
+  },
+  "devDependencies": {
+    "@types/node": "^20",
+    "@types/react": "^18",
+    "@types/react-dom": "^18",
+    "eslint": "^8",
+    "eslint-config-next": "14.2.35",
+    "postcss": "^8",
+    "puppeteer": "^25.10.0",
+    "tailwindcss": "^3.4.1",
+    "typescript": "^5"
+  }
+}

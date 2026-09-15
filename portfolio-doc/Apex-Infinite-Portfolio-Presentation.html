@@ -1,0 +1,863 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Apex Infinite — Portfolio</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg: #05050a;
+      --line: rgba(255,255,255,0.09);
+      --text: #f5f5f7;
+      --muted: #9ca3af;
+      --purple: #a855f7;
+      --cyan: #22d3ee;
+      --mint: #34d399;
+      --gold: #fbbf24;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; scroll-snap-type: y mandatory; }
+    body {
+      font-family: "Manrope", sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      overflow-x: hidden;
+    }
+
+    .slide {
+      min-height: 100vh;
+      scroll-snap-align: start;
+      position: relative;
+      padding: 32px clamp(18px, 4vw, 64px) 64px;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .slide::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(ellipse 55% 40% at 50% -5%, rgba(168,85,247,0.16), transparent 60%),
+        radial-gradient(ellipse 40% 35% at 95% 90%, rgba(34,211,238,0.10), transparent 55%);
+      pointer-events: none;
+    }
+
+    .slide > * { position: relative; z-index: 1; }
+    .wrap { max-width: 1180px; margin: 0 auto; width: 100%; }
+
+    /* Hero fills the whole viewport */
+    #s1.slide {
+      justify-content: stretch;
+      padding: 18px clamp(16px, 3vw, 40px) 22px;
+    }
+
+    #s1 .nav {
+      max-width: 1400px;
+      margin: 0 auto 10px;
+      flex-shrink: 0;
+    }
+
+    #s1 .wrap.hero-layout {
+      flex: 1;
+      max-width: 1400px;
+      min-height: 0;
+      height: 100%;
+      margin-top: 0;
+      display: grid;
+      grid-template-columns: minmax(260px, 0.88fr) minmax(480px, 1.22fr);
+      gap: clamp(14px, 2.2vw, 28px);
+      align-items: center;
+    }
+
+    #s1 .hero-copy h1 {
+      max-width: 16ch;
+      font-size: clamp(28px, 3.6vw, 46px);
+    }
+
+    #s1 .hero-welcome {
+      font-family: "Space Grotesk", sans-serif;
+      font-size: clamp(22px, 2.6vw, 34px);
+      font-weight: 700;
+      letter-spacing: -0.03em;
+      line-height: 1.15;
+      margin: 0 0 12px;
+      color: #fff;
+    }
+
+    #s1 .hero-welcome .accent {
+      background: linear-gradient(90deg, var(--purple), #e879f9, var(--cyan));
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+
+    #s1 .devices {
+      align-items: center;
+      width: 100%;
+      height: min(72vh, 100%);
+    }
+
+    #s1 .laptop {
+      max-width: none;
+      width: min(100%, 760px);
+    }
+
+    #s1 .phone-wrap {
+      margin-left: -48px;
+      margin-bottom: 0;
+      align-self: center;
+    }
+
+    #s1 .phone {
+      width: clamp(170px, 17vw, 250px);
+    }
+
+    .nav {
+      max-width: 1180px;
+      margin: 0 auto 18px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-family: "Space Grotesk", sans-serif;
+      font-weight: 700;
+      font-size: 18px;
+    }
+
+    .logo-mark {
+      width: 32px; height: 32px;
+      border-radius: 9px;
+      background: linear-gradient(135deg, var(--purple), var(--cyan));
+      display: grid;
+      place-items: center;
+      box-shadow: 0 0 22px rgba(168,85,247,0.35);
+    }
+
+    .eyebrow {
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.26em;
+      text-transform: uppercase;
+      color: var(--cyan);
+      margin-bottom: 10px;
+    }
+
+    h1 {
+      font-family: "Space Grotesk", sans-serif;
+      font-size: clamp(26px, 3.8vw, 42px);
+      font-weight: 700;
+      letter-spacing: -0.03em;
+      line-height: 1.08;
+      max-width: 18ch;
+      margin-bottom: 10px;
+    }
+
+    h2 {
+      font-family: "Space Grotesk", sans-serif;
+      font-size: clamp(22px, 2.8vw, 34px);
+      font-weight: 700;
+      letter-spacing: -0.03em;
+      line-height: 1.12;
+      margin-bottom: 10px;
+      max-width: 22ch;
+    }
+
+    .accent {
+      background: linear-gradient(90deg, var(--purple), var(--cyan));
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+
+    .lead, .body-copy {
+      color: var(--muted);
+      font-size: clamp(13px, 1.15vw, 15px);
+      line-height: 1.65;
+      max-width: 64ch;
+      margin-bottom: 12px;
+    }
+
+    .body-copy { color: #c4c4cc; }
+
+    .grid-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-top: 8px;
+    }
+
+    .grid-3 {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+      margin-top: 8px;
+    }
+
+    .card {
+      background: rgba(255,255,255,0.03);
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      padding: 16px;
+    }
+
+    .card .tag {
+      display: block;
+      font-size: 10px;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--cyan);
+      margin-bottom: 7px;
+      font-weight: 600;
+    }
+
+    .card h3 {
+      font-family: "Space Grotesk", sans-serif;
+      font-size: 15px;
+      margin-bottom: 7px;
+    }
+
+    .card p, .card li {
+      color: var(--muted);
+      font-size: 12.5px;
+      line-height: 1.5;
+    }
+
+    .card ul { list-style: none; display: grid; gap: 6px; margin-top: 6px; }
+    .card li { display: flex; gap: 7px; color: #d4d4d8; }
+    .card li::before { content: "▹"; color: var(--cyan); flex-shrink: 0; }
+
+    /* ========== REAL DEVICE MOCKUPS ========== */
+    .hero-layout {
+      display: grid;
+      grid-template-columns: 0.95fr 1.05fr;
+      gap: 28px;
+      align-items: center;
+      margin-top: 8px;
+    }
+
+    .devices {
+      display: flex;
+      align-items: flex-end;
+      justify-content: center;
+      position: relative;
+    }
+
+    .laptop {
+      position: relative;
+      width: 100%;
+      max-width: 560px;
+    }
+
+    .laptop .device-frame {
+      display: block;
+      width: 100%;
+      height: auto;
+      position: relative;
+      z-index: 1;
+      pointer-events: none;
+      user-select: none;
+    }
+
+    /* Screen hole inside MacBook mockup (below menu bar, above chin) */
+    .laptop-screen-in {
+      position: absolute;
+      z-index: 2;
+      left: 10.55%;
+      right: 10.45%;
+      top: 7.8%;
+      bottom: 10.5%;
+      overflow: hidden;
+      border-radius: 2px;
+      background: #090912;
+      padding: 0;
+    }
+
+    .screen-shot {
+      display: block;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: top center;
+      background: #090912;
+    }
+
+    .phone-wrap {
+      margin-left: -36px;
+      margin-bottom: 8px;
+      z-index: 4;
+      filter: drop-shadow(0 16px 28px rgba(0,0,0,0.45));
+    }
+
+    .phone {
+      position: relative;
+      width: 168px;
+    }
+
+    .phone .device-frame {
+      display: block;
+      width: 100%;
+      height: auto;
+      position: relative;
+      z-index: 1;
+      pointer-events: none;
+      user-select: none;
+    }
+
+    /* iPhone 16 Pro Max screen hole */
+    .phone-screen-in {
+      position: absolute;
+      z-index: 2;
+      left: 4.1%;
+      right: 3.9%;
+      top: 1.4%;
+      bottom: 1.6%;
+      overflow: hidden;
+      border-radius: 12.5%;
+      background: #07070c;
+      padding: 0;
+    }
+
+    .dynamic-island {
+      position: absolute;
+      z-index: 6;
+      top: 1.15%;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 32%;
+      height: 2.55%;
+      min-height: 14px;
+      border-radius: 999px;
+      background: #000;
+      box-shadow: inset 0 0 0 1px rgba(255,255,255,0.1);
+      pointer-events: none;
+    }
+
+    /* ========== UNIQUE SLIDE VISUALS ========== */
+    .flow {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 8px;
+      margin-top: 14px;
+    }
+
+    .flow-item {
+      background: rgba(255,255,255,0.03);
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      padding: 12px 8px;
+      text-align: center;
+    }
+
+    .flow-item .n {
+      width: 22px; height: 22px;
+      margin: 0 auto 6px;
+      border-radius: 6px;
+      display: grid; place-items: center;
+      font-size: 10px; font-weight: 700;
+      color: var(--cyan);
+      background: rgba(34,211,238,0.12);
+      border: 1px solid rgba(34,211,238,0.3);
+    }
+
+    .flow-item strong { display: block; font-size: 11px; margin-bottom: 2px; }
+    .flow-item p { font-size: 10px; color: var(--muted); }
+
+    .profit-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-top: 10px;
+    }
+
+    .profit {
+      border-radius: 14px;
+      border: 1px solid var(--line);
+      padding: 16px;
+      background: rgba(255,255,255,0.03);
+    }
+
+    .profit.user { border-color: rgba(34,211,238,0.3); background: rgba(34,211,238,0.05); }
+    .profit.biz { border-color: rgba(168,85,247,0.3); background: rgba(168,85,247,0.05); }
+    .profit.gold { border-color: rgba(251,191,36,0.3); background: rgba(251,191,36,0.05); }
+
+    .profit h3 { font-family: "Space Grotesk", sans-serif; font-size: 15px; margin-bottom: 6px; }
+    .profit .intro { color: var(--muted); font-size: 12px; line-height: 1.5; margin-bottom: 10px; }
+    .profit ul { list-style: none; display: grid; gap: 6px; }
+    .profit li { display: flex; gap: 7px; font-size: 12.5px; color: #d4d4d8; line-height: 1.4; }
+    .profit li::before { content: "▹"; color: var(--cyan); flex-shrink: 0; }
+
+    .split-visual {
+      display: grid;
+      grid-template-columns: 1.1fr 0.9fr;
+      gap: 20px;
+      align-items: center;
+      margin-top: 10px;
+    }
+
+    .mini-phone {
+      position: relative;
+      width: 200px;
+      margin: 0 auto;
+    }
+
+    .mini-phone .device-frame {
+      display: block;
+      width: 100%;
+      height: auto;
+      position: relative;
+      z-index: 1;
+      pointer-events: none;
+    }
+
+    .mini-phone .phone-screen-in {
+      left: 4.1%;
+      right: 3.9%;
+      top: 1.4%;
+      bottom: 1.6%;
+      padding: 0;
+      border-radius: 12.5%;
+    }
+
+    .ai-bubbles { display: grid; gap: 8px; }
+
+    .bubble {
+      background: rgba(255,255,255,0.04);
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      padding: 12px;
+    }
+
+    .bubble strong { display: block; font-size: 12px; margin-bottom: 4px; }
+    .bubble p { font-size: 11px; color: var(--muted); line-height: 1.4; }
+
+    .devices.solo {
+      margin-top: 18px;
+      justify-content: center;
+      max-width: 780px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .devices.solo-laptop .phone-wrap { display: none !important; }
+    .devices.solo-laptop .laptop { width: min(100%, 680px); max-width: 680px; }
+
+    .devices.solo-phone .laptop { display: none !important; }
+    .devices.solo-phone .phone-wrap {
+      margin-left: 0;
+      margin-bottom: 0;
+      filter: drop-shadow(0 22px 40px rgba(0,0,0,0.5));
+    }
+    .devices.solo-phone .phone { width: clamp(200px, 22vw, 260px); }
+
+    .slide.with-devices {
+      justify-content: flex-start;
+      padding-top: 28px;
+      padding-bottom: 40px;
+      overflow-y: auto;
+    }
+
+    .cta-box {
+      margin-top: 16px;
+      padding: 16px 18px;
+      border-radius: 14px;
+      border: 1px solid rgba(168,85,247,0.35);
+      background: linear-gradient(135deg, rgba(168,85,247,0.12), rgba(34,211,238,0.06));
+      max-width: 640px;
+    }
+
+    .cta-box h3 { font-family: "Space Grotesk", sans-serif; margin-bottom: 5px; font-size: 15px; }
+    .cta-box p { color: var(--muted); font-size: 13px; line-height: 1.5; }
+
+    .progress {
+      position: fixed;
+      right: 14px;
+      top: 50%;
+      transform: translateY(-50%);
+      z-index: 40;
+      display: flex;
+      flex-direction: column;
+      gap: 7px;
+    }
+
+    .progress a {
+      width: 8px; height: 8px;
+      border-radius: 50%;
+      background: #3f3f46;
+      display: block;
+    }
+
+    .progress a.active {
+      background: linear-gradient(180deg, var(--purple), var(--cyan));
+      transform: scale(1.35);
+    }
+
+    @media (max-width: 960px) {
+      .hero-layout, .split-visual, .grid-2, .grid-3, .profit-grid, .flow { grid-template-columns: 1fr; }
+      .progress { display: none; }
+      .devices { flex-direction: column; align-items: center; }
+      .phone-wrap { margin-left: 0; margin-top: 14px; }
+      #s1 .wrap.hero-layout {
+        grid-template-columns: 1fr;
+        height: auto;
+      }
+      #s1 .devices { height: auto; }
+      #s1 .phone-wrap { margin-left: 0; }
+      #s1 .phone { width: min(220px, 55vw); }
+    }
+  </style>
+</head>
+<body>
+
+  <nav class="progress" id="progress">
+    <a href="#s1" class="active"></a>
+    <a href="#s2"></a>
+    <a href="#s3"></a>
+    <a href="#s4"></a>
+    <a href="#s5"></a>
+    <a href="#s6"></a>
+    <a href="#s7"></a>
+  </nav>
+
+  <!-- SLIDE 1: CONTENT + MACBOOK + PHONE -->
+  <section class="slide" id="s1">
+    <div class="nav">
+      <div class="logo"><span class="logo-mark">∞</span> Apex Infinite</div>
+    </div>
+    <div class="wrap hero-layout">
+      <div class="hero-copy">
+        <p class="hero-welcome">Welcome back, <span class="accent">Voyager</span></p>
+        <h1>Best place to live, work &amp; transact — <span class="accent">all in one OS</span></h1>
+        <p class="lead">
+          Apex Infinite is a production-facing Super-App platform — delivered as a commissioned product build —
+          that unifies 11 lifestyle services under one identity, one Command Center, and one unified control layer.
+        </p>
+      </div>
+
+      <div class="devices" id="device-kit">
+        <div class="laptop">
+          <img class="device-frame" src="mockups/macbook.png" alt="MacBook mockup" />
+          <div class="laptop-screen-in">
+            <img class="screen-shot" src="screenshots/desktop-command-center.png" alt="Apex Infinite Command Center" />
+          </div>
+        </div>
+
+        <div class="phone-wrap">
+          <div class="phone">
+            <img class="device-frame" src="mockups/iphone-16-pro-max.png" alt="iPhone 16 Pro Max mockup" />
+            <div class="phone-screen-in">
+              <img class="screen-shot" src="screenshots/mobile-command-center.png" alt="Apex Infinite mobile Command Center" />
+              <div class="dynamic-island" aria-hidden="true"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SLIDE 2: MAIN MOTIVE -->
+  <section class="slide" id="s2">
+    <div class="wrap">
+      <p class="eyebrow">01 · Main Motive</p>
+      <h2>What is the main motive of this project?</h2>
+      <p class="body-copy">
+        <strong style="color:#fff;">Main motive:</strong> build a Universal AI Super-OS that completes major daily digital tasks —
+        food, rides, travel, payments, shopping, workspace, events, and wellness —
+        inside <em>one identity and one Command Center</em>.
+      </p>
+      <p class="body-copy">
+        Goal: <strong style="color:#fff;">“One OS for life, work &amp; commerce.”</strong>
+        Users should not need 8–10 separate apps, repeated logins, or a new checkout pattern for every service.
+      </p>
+      <div class="grid-3">
+        <div class="card">
+          <span class="tag">Motive A</span>
+          <h3>Unify the lifestyle stack</h3>
+          <p>Connect Food, Glide, Travel, ApexPay, Vogue, and the remaining modules inside one Super-App shell.</p>
+        </div>
+        <div class="card">
+          <span class="tag">Motive B</span>
+          <h3>AI as the control layer</h3>
+          <p>Integrate Omnibar + Oracle so intent becomes navigation — the OS routes users automatically to the right module.</p>
+        </div>
+        <div class="card">
+          <span class="tag">Motive C</span>
+          <h3>Real conversion</h3>
+          <p>Checkout first, tracking second — a business-ready product, not an empty demo.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SLIDE 3: WHY -->
+  <section class="slide" id="s3">
+    <div class="wrap">
+      <p class="eyebrow">02 · Why We Built It</p>
+      <h2>Why was this project built?</h2>
+      <p class="body-copy">
+        Digital life is <strong style="color:#fff;">fragmented</strong> — food in one app, rides in another, bookings in a third, wallet in a fourth.
+        That wastes user time and breaks business retention.
+      </p>
+      <p class="body-copy">
+        Apex Infinite was shaped from a real commercial product brief:
+        shared auth, shared navigation, AI-assisted routing, and shared checkout —
+        a <strong style="color:#fff;">platform-thinking</strong> engagement, not a decorative UI mock.
+      </p>
+      <div class="grid-2">
+        <div class="card">
+          <span class="tag">Market Reality</span>
+          <h3>App fragmentation</h3>
+          <ul>
+            <li>A separate app and login for every need</li>
+            <li>Different checkout patterns everywhere</li>
+            <li>User intent gets lost between apps</li>
+            <li>Weak retention — attention stays scattered</li>
+          </ul>
+        </div>
+        <div class="card">
+          <span class="tag">Our Response</span>
+          <h3>Unified Super-OS</h3>
+          <ul>
+            <li>One Gateway identity (OTP / Email / Social)</li>
+            <li>One Command Center dashboard</li>
+            <li>Eleven modules inside one shell</li>
+            <li>AI + shared checkout for a sticky ecosystem</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SLIDE 4: BUSINESS VALUE -->
+  <section class="slide" id="s4">
+    <div class="wrap">
+      <p class="eyebrow">03 · Business Value</p>
+      <h2>What value does this architecture create?</h2>
+      <p class="body-copy">
+        In a commercial Super-App engagement, Apex Infinite becomes a <strong style="color:#fff;">compounding asset</strong> —
+        every new module rides on existing auth, shell, AI routing, and checkout: lower rebuild cost, higher retention.
+      </p>
+      <div class="profit-grid">
+        <div class="profit biz">
+          <h3>Platform / business value</h3>
+          <p class="intro">Users stay inside the ecosystem — Food → Glide → ApexPay — increasing lifetime value.</p>
+          <ul>
+            <li><strong style="color:#fff;">Higher retention</strong> — multiple daily needs in one OS</li>
+            <li><strong style="color:#fff;">Lower build cost</strong> — shared auth + checkout spine</li>
+            <li><strong style="color:#fff;">Conversion lift</strong> — faster entry via Omnibar</li>
+            <li><strong style="color:#fff;">Upsell surface</strong> — wallet, events, fashion in one session</li>
+            <li><strong style="color:#fff;">Scalable roadmap</strong> — new verticals plug into the shell</li>
+          </ul>
+        </div>
+        <div class="profit gold">
+          <h3>Delivery capability signaled</h3>
+          <p class="intro">This build reflects the kind of custom work we deliver: AI integration, intelligent routing, and end-to-end product systems.</p>
+          <ul>
+            <li>Custom Super-App / platform architecture</li>
+            <li>AI integration across product surfaces</li>
+            <li>Automated intent-to-module routing</li>
+            <li>Reusable patterns for future client builds</li>
+            <li>Clear commercial narrative for stakeholders</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SLIDE 5: USER BENEFIT -->
+  <section class="slide" id="s5">
+    <div class="wrap">
+      <p class="eyebrow">04 · User Benefit</p>
+      <h2>What benefit does the user get?</h2>
+      <p class="body-copy">
+        User benefit is simple: <strong style="color:#fff;">fewer apps, less friction, more speed</strong>.
+        One login, tasks from the Command Center, and AI that takes them to the right place.
+      </p>
+      <div class="profit-grid">
+        <div class="profit user">
+          <h3>Daily-life benefits</h3>
+          <ul>
+            <li>One account for Food, Ride, Travel, Pay, Shopping</li>
+            <li>The same familiar checkout everywhere</li>
+            <li>Orders, trips, and bookings in one activity view</li>
+            <li>Tracking only after checkout is complete</li>
+            <li>Consistent experience on mobile and desktop</li>
+          </ul>
+        </div>
+        <div class="profit user">
+          <h3>Less time &amp; mental load</h3>
+          <ul>
+            <li>No constant app switching</li>
+            <li>Omnibar: “order sushi” / “ride to airport”</li>
+            <li>Oracle available on every screen</li>
+            <li>Fewer passwords, less re-learning of UIs</li>
+            <li>One lifestyle OS — one product feel</li>
+          </ul>
+        </div>
+      </div>
+      <div class="flow">
+        <div class="flow-item"><div class="n">1</div><strong>Gateway</strong><p>Secure login</p></div>
+        <div class="flow-item"><div class="n">2</div><strong>Command</strong><p>Dashboard</p></div>
+        <div class="flow-item"><div class="n">3</div><strong>Module</strong><p>Service</p></div>
+        <div class="flow-item"><div class="n">4</div><strong>Checkout</strong><p>Pay</p></div>
+        <div class="flow-item"><div class="n">5</div><strong>Track</strong><p>Live status</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SLIDE 6: AI ROLE -->
+  <section class="slide" id="s6">
+    <div class="wrap">
+      <p class="eyebrow">05 · AI Integration &amp; Automation</p>
+      <h2>What AI does here — and how it works</h2>
+      <p class="body-copy">
+        In Apex Infinite, AI is not a chat gimmick. It is an <strong style="color:#fff;">integrated control layer</strong>
+        that automates discovery and navigation across eleven modules — so users speak intent instead of hunting menus.
+      </p>
+      <div class="grid-3" style="margin-bottom:12px;">
+        <div class="card">
+          <span class="tag">What AI does</span>
+          <h3>Intent understanding</h3>
+          <p>Reads natural language from Omnibar / Oracle and maps it to a module + action (order, book, pay, open).</p>
+        </div>
+        <div class="card">
+          <span class="tag">How it works</span>
+          <h3>Routing pipeline</h3>
+          <p>Text in → intent detection → confidence scoring → module match → user lands on the right surface to convert.</p>
+        </div>
+        <div class="card">
+          <span class="tag">What it automates</span>
+          <h3>Navigation &amp; discovery</h3>
+          <p>Automates “where should I go?” across the Super-OS — reducing clicks, menu fatigue, and drop-off.</p>
+        </div>
+      </div>
+      <div class="split-visual">
+        <div class="ai-bubbles">
+          <div class="bubble">
+            <strong>Omnibar — AI Integration surface</strong>
+            <p>Command-bar integration inside the Command Center. Shared client + API intent pipeline (`/api/intent`) keeps routing consistent.</p>
+          </div>
+          <div class="bubble">
+            <strong>Oracle — always-on automation companion</strong>
+            <p>Same brain, conversational UI. Helps users discover modules and continue tasks without leaving the OS shell.</p>
+          </div>
+          <div class="bubble">
+            <strong>Service fit</strong>
+            <p>This pattern mirrors the work we deliver commercially: custom AI integration into product UIs, automated intent routing, and end-to-end Super-App systems.</p>
+          </div>
+        </div>
+        <div class="mini-phone">
+          <img class="device-frame" src="mockups/iphone-16-pro-max.png" alt="iPhone 16 Pro Max mockup" />
+          <div class="phone-screen-in">
+            <img class="screen-shot" src="screenshots/mobile-glide.png" alt="Apex Glide mobile" />
+            <div class="dynamic-island" aria-hidden="true"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SLIDE 7: SUMMARY -->
+  <section class="slide" id="s7">
+    <div class="wrap">
+      <p class="eyebrow">06 · Full Picture</p>
+      <h2>Short description — the full story</h2>
+      <div class="grid-2">
+        <div class="card">
+          <span class="tag">What</span>
+          <h3>Apex Infinite</h3>
+          <p>A commissioned Super-OS product case study — 11 modules, Gateway, Command Center, Omnibar, Oracle, shared checkout. Next.js 14 · TypeScript · Tailwind · Framer Motion.</p>
+        </div>
+        <div class="card">
+          <span class="tag">Why</span>
+          <h3>End app fragmentation</h3>
+          <p>Logins, checkouts, and attention were split across apps — so the brief called for one unified lifestyle OS.</p>
+        </div>
+        <div class="card">
+          <span class="tag">AI layer</span>
+          <h3>Integration + routing automation</h3>
+          <p>Omnibar + Oracle share one intent pipeline — automating navigation from natural language to the correct module.</p>
+        </div>
+        <div class="card">
+          <span class="tag">User benefit</span>
+          <h3>One OS, faster life</h3>
+          <p>One identity, familiar flows, AI-assisted routing, live tracking — fewer apps, more done.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <script>
+    (function () {
+      const links = Array.from(document.querySelectorAll(".progress a"));
+      const sections = links.map((a) => document.querySelector(a.getAttribute("href")));
+      const kit = document.getElementById("device-kit");
+
+      // Design sense: alternate devices — not both on every slide
+      // s1 = MacBook + Phone (hero only)
+      // s2/s4/s7 = MacBook only | s3/s5 = Phone only | s6 keeps AI visual
+      const plan = {
+        s2: "laptop",
+        s3: "phone",
+        s4: "laptop",
+        s5: "phone",
+        s7: "laptop",
+      };
+
+      if (kit) {
+        const shotPlan = {
+          s2: { laptop: "screenshots/desktop-command-center.png" },
+          s3: { phone: "screenshots/mobile-glide.png" },
+          s4: { laptop: "screenshots/desktop-food.png" },
+          s5: { phone: "screenshots/mobile-pay.png" },
+          s7: { laptop: "screenshots/desktop-command-center.png" },
+        };
+
+        Object.keys(plan).forEach((id) => {
+          const slide = document.getElementById(id);
+          if (!slide) return;
+          slide.classList.add("with-devices");
+          const wrap = slide.querySelector(".wrap");
+          if (!wrap) return;
+          const clone = kit.cloneNode(true);
+          clone.removeAttribute("id");
+          clone.classList.add("solo");
+          clone.classList.add(plan[id] === "laptop" ? "solo-laptop" : "solo-phone");
+
+          const shots = shotPlan[id] || {};
+          if (shots.laptop) {
+            const img = clone.querySelector(".laptop-screen-in .screen-shot");
+            if (img) img.src = shots.laptop;
+          }
+          if (shots.phone) {
+            const img = clone.querySelector(".phone-screen-in .screen-shot");
+            if (img) img.src = shots.phone;
+          }
+
+          wrap.appendChild(clone);
+        });
+      }
+
+      const io = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+          if (!entry.isIntersecting) return;
+          const id = "#" + entry.target.id;
+          links.forEach((l) => l.classList.toggle("active", l.getAttribute("href") === id));
+        });
+      }, { threshold: 0.35 });
+      sections.forEach((s) => s && io.observe(s));
+    })();
+  </script>
+</body>
+</html>
